@@ -188,5 +188,7 @@ if __name__ == "__main__":
             gui_game()
         elif sys.argv[1].lower() in ["-c", "--cli", "cli"]:
             cli_game().start()
+        else:
+            print("Invalid arguments, use --help for help")
     else:
         print("Not enough arguments, use --help for help")

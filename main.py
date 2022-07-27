@@ -33,32 +33,37 @@ class cli_game:
     def __init__(self):
         self.name = input("Name: ")
         self.word = input("Word: ")
+        print(f"\033[1AWord: {'*'*len(self.word)}\033[K")
         self.guessed_letters = []
         self.stage = -1
     def start(self):
         while True:
             self.guessed = True
             if self.stage == 7:
-                print(f"\033[91mYou have run out of attempts. The man is dead.\033[0m")
+                print(f"\033[91mYou have run out of attempts. The man is dead.\nThe word was {self.word}\033[0m")
                 break
             guess = input("Guess a letter: ")
             if guess == "exit":
                 break
-            if len(guess) != 1:
-                print("You must guess one letter")
-                continue
-            if guess not in self.word:
-                self.stage += 1
-            print(getattr(stages, f"s{self.stage}"))
-            for i in self.word:
-                if i in self.guessed_letters:
-                    print("\033[4m"+i+"\033[0m", end="")
-                elif i == guess:
-                    self.guessed_letters.append(guess)
-                    print("\033[4m"+i+"\033[0m", end="")
-                else:
-                    print("_", end="")
-                    self.guessed = False
+            if len(guess) != 1 and guess != self.word:
+                print("You have tried to guess a whole word have have guessed wrong. \033[91mYou lose.\033[0m")
+                break
+            elif len(guess) != 1 and guess == self.word:
+                self.guessed = True
+            else:
+                if guess not in self.word:
+                    self.stage += 1
+                if self.stage >= 0:
+                    print(getattr(stages, f"s{self.stage}"))
+                for i in self.word:
+                    if i in self.guessed_letters:
+                        print("\033[4m"+i+"\033[0m", end="")
+                    elif i == guess:
+                        self.guessed_letters.append(guess)
+                        print("\033[4m"+i+"\033[0m", end="")
+                    else:
+                        print("_", end="")
+                        self.guessed = False
             print()
             if self.guessed == True:
                 print(f"\033[92mCongratulations {self.name}, you guessed the word!\033[0m")
@@ -125,7 +130,7 @@ class gui_game:
             self.guessed = True
             lbl_txt = ""
             if self.stage == 7:
-                lbl_txt += f"You have run out of attempts. The man is dead."
+                lbl_txt += f"You have run out of attempts. The man is dead.\nThe word was {self.word}"
                 self.label.config(state='normal')
                 self.label.delete(0.0, 'end')
                 self.label.insert('end', lbl_txt)

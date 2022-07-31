@@ -184,7 +184,7 @@ class AboutDialog:
         self.close_button = tk.Button(top, text='Close', command=self.top.destroy)
         self.close_button.pack()
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) > 1:
         if sys.argv[1].lower() in ["-h", "--help", "help"]:
             print(HELP_MESSAGE)
@@ -197,3 +197,6 @@ if __name__ == "__main__":
             print("Invalid arguments, use --help for help")
     else:
         print("Not enough arguments, use --help for help")
+
+if __name__ == "__main__":
+    main()
